@@ -1,0 +1,13 @@
+philosophical-engine
+├── app/
+│   ├── __init__.py
+│   ├── main.py          # FastAPI application
+│   ├── scraper.py       # Scraper module with background task
+│   ├── training.py      # Training pipeline
+│   ├── models.py        # ML algorithms suite
+│   ├── data/            # Scraped data storage
+│   └── models/          # Trained model storage
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── README.md

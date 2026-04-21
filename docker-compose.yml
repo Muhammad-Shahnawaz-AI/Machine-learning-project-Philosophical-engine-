@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  philosophical-engine:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/data:/app/data
+      - ./app/models:/app/models
+    environment:
+      - PYTHONPATH=/app
