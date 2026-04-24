@@ -1,19 +1,16 @@
-import json
-import os
 from app.models import PhilosophicalEngine
 
+
 def train_models(engine: PhilosophicalEngine):
-    data_dir = 'app/data'
-    quotes_file = os.path.join(data_dir, 'quotes.json')
-    
-    if not os.path.exists(quotes_file):
-        return
-    
-    with open(quotes_file, 'r') as f:
-        quotes = json.load(f)
-    
-    # Dummy labels for supervised learning (e.g., philosophical schools)
-    labels = [i % 3 for i in range(len(quotes))]  # 0: Ancient, 1: Modern, 2: Contemporary
-    
-    engine.train_supervised(quotes, labels)
-    engine.train_unsupervised(quotes)
+    classification_X, classification_y = engine.generate_dataset("classification", n_samples=300, random_state=42)
+    regression_X, regression_y = engine.generate_dataset("regression", n_samples=250, random_state=42)
+
+    history = {}
+    for mode in engine.available_modes():
+        if mode == "Teleology":
+            history[mode] = engine.train_model(mode, regression_X, regression_y, epochs=180, learning_rate=0.05)
+        elif mode == "Taxonomy of Being":
+            history[mode] = engine.train_model(mode, classification_X)
+        else:
+            history[mode] = engine.train_model(mode, classification_X, classification_y, epochs=120, learning_rate=0.05)
+    return history
