@@ -22,7 +22,8 @@ async def scrape_philosophical_texts():
     with open(os.path.join(data_dir, 'quotes.json'), 'w') as f:
         json.dump(quotes, f)
     
-    # Simulate continuous scraping
-    while True:
-        await asyncio.sleep(3600)  # Scrape every hour
-        # Add more scraping logic here
+    # Simulate continuous scraping (disabled for debugging)
+    # while True:
+    #     await asyncio.sleep(3600)  # Scrape every hour
+    #     # Add more scraping logic here
+    print("Scraping completed successfully")

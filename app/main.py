@@ -1,6 +1,12 @@
-from fastapi import FastAPI, BackgroundTasks
+from fastapi import FastAPI, BackgroundTasks, Request
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 import asyncio
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from app.scraper import scrape_philosophical_texts
 from app.training import train_models
 from app.models import PhilosophicalEngine
@@ -9,6 +15,17 @@ from app.visualizer import PhilosophicalEngineGUI
 app = FastAPI(title="Philosophical Engine")
 engine = PhilosophicalEngine()
 scraper_task = None
+
+# Setup templates
+templates = Jinja2Templates(directory="app/templates")
+
+@app.get("/")
+def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/api")
+def api_info():
+    return {"message": "Philosophical Engine API", "version": "1.0.0", "endpoints": ["/", "/api", "/modes", "/start_scraper", "/stop_scraper", "/train", "/predict", "/feedback"]}
 
 class PredictionRequest(BaseModel):
     text: str
